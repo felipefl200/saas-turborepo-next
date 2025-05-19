@@ -1,0 +1,21 @@
+{
+  "name": "next-saas-rbac",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@11.4.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "config/*"
+  ]
+}
