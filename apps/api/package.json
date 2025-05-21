@@ -2,16 +2,25 @@
   "name": "@saas/api",
   "version": "0.0.1",
   "scripts": {
-    "dev": "tsx --watch src/index.ts"
+    "dev": "tsx --watch src/http/server.ts"
   },
   "dependencies": {
-    "@saas/auth": "*"
+    "@fastify/cors": "^11.0.1",
+    "@prisma/client": "^6.8.2",
+    "@saas/auth": "*",
+    "bcryptjs": "^3.0.2",
+    "fastify": "^5.3.3",
+    "fastify-type-provider-zod": "^4.0.2",
+    "zod": "^3.25.7"
   },
   "devDependencies": {
     "@saas/eslint-config": "*",
     "@saas/prettier": "*",
     "@saas/tsconfig": "*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.15.19",
+    "pino-pretty": "^13.0.0",
+    "prisma": "^6.8.2",
     "tsx": "^4.19.4"
   },
   "prettier": "@saas/prettier",
