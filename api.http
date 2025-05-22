@@ -2,7 +2,45 @@ POST http://localhost:3333/users
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john.doe@example.com",
+  "name": "John Doe Lipin",
+  "email": "john.doe@teste.com",
+  "password": "securepassword"
+}
+
+###
+# @name login
+POST http://localhost:3333/sessions/password
+Content-Type: application/json
+
+{
+  "email": "john.doe@teste.com",
+  "password": "securepassword"
+}
+
+###
+@tokenLogin = {{login.response.body.token}}
+
+###
+GET http://localhost:3333/profile
+Authorization: Bearer {{tokenLogin}}
+
+###
+# @name resetPassword
+POST http://localhost:3333/password-recover
+Content-Type: application/json
+
+{
+  "email": "john.doe@teste.com"
+}
+
+###
+@tokenReset = {{resetPassword.response.body.recoveryToken}}
+
+###
+POST http://localhost:3333/reset-password
+Content-Type: application/json
+
+{
+  "token": "{{tokenReset}}",
   "password": "securepassword"
 }
