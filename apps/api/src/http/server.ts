@@ -1,7 +1,7 @@
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
-import fastifySwaggerUi from '@fastify/swagger-ui'
+import fastifySwaggerUI from '@fastify/swagger-ui'
 import fastify from 'fastify'
 import {
   jsonSchemaTransform,
@@ -9,12 +9,20 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
-import { errorHandler } from './error-handler'
-import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
+
+import { errorHandler } from '@/http/error-handler'
+import { authenticateWithGithub } from '@/http/routes/auth/authenticate-with-github'
+import { authenticateWithPassword } from '@/http/routes/auth/authenticate-with-password'
+import { getProfile } from '@/http/routes/auth/get-profile'
+import { requestPasswordRecover } from '@/http/routes/auth/request-password-recover'
+import { resetPassword } from '@/http/routes/auth/reset-password'
+
+import { env } from 'process'
 import { createAccount } from './routes/auth/create-account'
-import { getProfile } from './routes/auth/get-profile'
-import { requestPasswordRecover } from './routes/auth/request-password-recover'
-import { resetPassword } from './routes/auth/reset-password'
+import { createOrganization } from './routes/orgs/create-organization'
+import { getMembership } from './routes/orgs/get-membership'
+import { getOrganization } from './routes/orgs/get-organization'
+import { getOrganizations } from './routes/orgs/get-organizations'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -28,43 +36,54 @@ const app = fastify({
     : true,
 }).withTypeProvider<ZodTypeProvider>()
 
+app.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler)
+
 app.setErrorHandler(errorHandler)
 
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Saas Backend',
-      description: 'Saas backend service multi-tenant & RBAC',
+      title: 'Next.js SaaS',
+      description: 'Full-stack SaaS with multi-tenant & RBAC.',
       version: '1.0.0',
     },
-    servers: [],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
 
-app.register(fastifySwaggerUi, {
+app.register(fastifySwaggerUI, {
   routePrefix: '/docs',
 })
 
 app.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET || 'supersecret',
-  sign: {
-    algorithm: 'HS256',
-  },
+  secret: 'my-jwt-secret',
 })
-
-app.setSerializerCompiler(serializerCompiler)
-app.setValidatorCompiler(validatorCompiler)
 
 app.register(fastifyCors)
 
 app.register(createAccount)
 app.register(authenticateWithPassword)
+app.register(authenticateWithGithub)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
 
-app.listen({ port: 3333 }, (err, address) => {
+app.register(createOrganization)
+app.register(getMembership)
+app.register(getOrganization)
+app.register(getOrganizations)
+
+app.listen({ port: Number(env.SERVER_PORT) }, (err, address) => {
   if (err) {
     app.log.error(err)
     process.exit(1)

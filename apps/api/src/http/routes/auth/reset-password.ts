@@ -3,11 +3,11 @@ import { hashSync } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { BadRequestError } from '../_errors/bad-request.error'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function resetPassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/reset-password',
+    '/password-reset',
     {
       schema: {
         summary: 'Reset password',

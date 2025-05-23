@@ -1,3 +1,4 @@
+### Criar Usuário
 POST http://localhost:3333/users
 Content-Type: application/json
 
@@ -7,24 +8,26 @@ Content-Type: application/json
   "password": "securepassword"
 }
 
-###
+@password = "newpassword"
+
+### Login do Usuário
 # @name login
 POST http://localhost:3333/sessions/password
 Content-Type: application/json
 
 {
   "email": "john.doe@teste.com",
-  "password": "securepassword"
+  "password": {{password}}
 }
 
 ###
 @tokenLogin = {{login.response.body.token}}
 
-###
+### Buscar dados do usuário com autenticado
 GET http://localhost:3333/profile
 Authorization: Bearer {{tokenLogin}}
 
-###
+### Recuperar senha
 # @name resetPassword
 POST http://localhost:3333/password-recover
 Content-Type: application/json
@@ -36,11 +39,25 @@ Content-Type: application/json
 ###
 @tokenReset = {{resetPassword.response.body.recoveryToken}}
 
-###
-POST http://localhost:3333/reset-password
+### Resetar Senha
+POST http://localhost:3333/password-reset
 Content-Type: application/json
 
 {
   "token": "{{tokenReset}}",
-  "password": "securepassword"
+  "password": "newpassword"
 }
+
+### Criar Organização
+POST http://localhost:3333/organizations
+Content-Type: application/json
+Authorization: Bearer {{tokenLogin}}
+
+{
+  "name": "Organization Test",
+  "domain": "test1.com",
+  "shouldAttachUsersByDomain": true
+}
+
+### Buscar Membros da Organização
+GET http://localhost:3333/organizations/members

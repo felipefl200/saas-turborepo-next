@@ -1,56 +1,53 @@
-import { authMiddleware } from '@/http/middlewares/auth-middleware'
+import { auth } from '@/http/middlewares/auth'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-import { FastifyInstance } from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
+import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { BadRequestError } from '../_errors/bad-request.error'
 
 export async function getProfile(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .register(authMiddleware)
+    .register(auth)
     .get(
       '/profile',
       {
         schema: {
+          tags: ['Auth'],
           summary: 'Get authenticated user profile',
-          tags: ['auth'],
+          security: [{ bearerAuth: [] }],
           response: {
             200: z.object({
               user: z.object({
-                id: z.string(),
+                id: z.string().uuid(),
                 name: z.string().nullable(),
                 email: z.string().email(),
-                avatarUrl: z.string().nullable(),
+                avatarUrl: z.string().url().nullable(),
               }),
-            }),
-            400: z.object({
-              message: z.string(),
             }),
           },
         },
       },
-
       async (request, reply) => {
         const userId = await request.getCurrentUserId()
-        if (!userId) {
-          throw new BadRequestError('User not found')
-        }
+
         const user = await prisma.user.findUnique({
-          where: { id: userId },
           select: {
             id: true,
-            email: true,
             name: true,
+            email: true,
             avatarUrl: true,
+          },
+          where: {
+            id: userId,
           },
         })
 
         if (!user) {
-          throw new BadRequestError('User not found')
+          throw new BadRequestError('User not found.')
         }
 
-        return reply.status(200).send({ user })
+        return reply.send({ user })
       }
     )
 }

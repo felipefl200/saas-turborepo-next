@@ -1,18 +1,16 @@
 {
-    "extends": "@saas/tsconfig/node.json",
-    "include": [
-        "src/**/*.ts",
-        "@types/**/*.d.ts",
-    ],
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": [
-                "./src/*"
-            ],
-            "@/prisma/*": [
-                "./src/lib/prisma/*"
-            ],
-        }
+  "extends": "@saas/tsconfig/node.json",
+  "include": [
+    "src/**/*",
+    "@types/*.d.ts",
+    "src/http/server.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
     }
+  }
 }

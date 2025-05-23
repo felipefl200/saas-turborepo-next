@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { hashSync } from 'bcryptjs'
 import { PrismaClient } from '../src/generated/prisma'
+import { generateSlug } from '../src/utils/generate-slug'
 
 const prisma = new PrismaClient()
 
@@ -37,12 +38,12 @@ async function seed() {
       return await prisma.organization.create({
         data: {
           name: companyName,
-          slug: faker.helpers.slugify(companyName),
+          slug: generateSlug(companyName),
           ownerId: owner.id,
           projects: {
             create: Array.from({ length: 3 }).map(() => ({
               name: faker.commerce.productName(),
-              slug: faker.helpers.slugify(faker.commerce.productName()),
+              slug: generateSlug(faker.commerce.productName()),
               description: faker.commerce.productDescription(),
               owner: { connect: { id: owner.id } },
             })),
@@ -78,7 +79,7 @@ async function seed() {
     }
   }
 
-  console.log({ users, organizations })
+  // console.log({ users, organizations })
 }
 
 seed()
