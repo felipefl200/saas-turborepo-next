@@ -9,10 +9,10 @@ export async function getMembership(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      'organization/:slug/membership',
+      '/organization/:slug/membership',
       {
         schema: {
-          tags: ['Organization'],
+          tags: ['Organizations'],
           summary: 'Get user membership in an organization',
           params: z.object({
             slug: z.string().min(1).max(255),

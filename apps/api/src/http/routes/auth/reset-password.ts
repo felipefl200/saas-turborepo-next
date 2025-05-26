@@ -18,7 +18,7 @@ export async function resetPassword(app: FastifyInstance) {
           password: z.string().min(6),
         }),
         response: {
-          200: z.object({
+          204: z.object({
             message: z.null(),
           }),
           400: z.object({

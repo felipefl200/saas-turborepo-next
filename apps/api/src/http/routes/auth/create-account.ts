@@ -21,6 +21,8 @@ export async function createAccount(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
+      console.log('Creating a new user account...')
+
       const { name, email, password } = request.body
 
       const userWithSameEmail = await prisma.user.findUnique({
@@ -60,6 +62,6 @@ export async function createAccount(app: FastifyInstance) {
       })
 
       return reply.status(201).send()
-    },
+    }
   )
 }

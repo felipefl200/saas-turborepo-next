@@ -3,11 +3,12 @@ POST http://localhost:3333/users
 Content-Type: application/json
 
 {
-  "name": "John Doe Lipin",
-  "email": "john.doe@teste.com",
+  "name": "Slim Doe",
+  "email": "john.doe@teste1.com",
   "password": "securepassword"
 }
 
+### Variavel de senha
 @password = "newpassword"
 
 ### Login do Usuário
@@ -59,5 +60,13 @@ Authorization: Bearer {{tokenLogin}}
   "shouldAttachUsersByDomain": true
 }
 
+### Buscar Organizações
+GET http://localhost:3333/organizations
+Authorization: Bearer {{tokenLogin}}
+
+
 ### Buscar Membros da Organização
-GET http://localhost:3333/organizations/members
+GET http://localhost:3333/organization/:slug/membership
+Authorization: Bearer {{tokenLogin}}
+
+

@@ -10,13 +10,12 @@ export async function getOrganizations(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/organizations/:slug',
+      '/organizations',
       {
         schema: {
           summary: 'Get organization where user is a member',
           security: [{ bearerAuth: [] }],
           tags: ['Organizations'],
-
           response: {
             200: z.object({
               organizations: z.array(
