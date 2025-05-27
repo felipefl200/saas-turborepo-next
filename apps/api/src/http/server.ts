@@ -28,6 +28,9 @@ import { transferOrganization } from './routes/orgs/transfer-organization'
 import { updateOrganization } from './routes/orgs/update-organization'
 import { createProject } from './routes/projects/create-project'
 import { deleteProject } from './routes/projects/delete-project'
+import { getProject } from './routes/projects/get-project'
+import { getProjects } from './routes/projects/get-projects'
+import { updateProject } from './routes/projects/update-project'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -92,6 +95,9 @@ app.register(shutdownOrganization)
 app.register(transferOrganization)
 app.register(createProject)
 app.register(deleteProject)
+app.register(getProject)
+app.register(getProjects)
+app.register(updateProject)
 
 app.listen({ port: Number(env.SERVER_PORT) }, (err, address) => {
   if (err) {
