@@ -19,6 +19,9 @@ import { resetPassword } from '@/http/routes/auth/reset-password'
 
 import { env } from 'process'
 import { createAccount } from './routes/auth/create-account'
+import { getMembers } from './routes/members/get-members'
+import { removeMember } from './routes/members/remove-member'
+import { updateMember } from './routes/members/update-member'
 import { createOrganization } from './routes/orgs/create-organization'
 import { getMembership } from './routes/orgs/get-membership'
 import { getOrganization } from './routes/orgs/get-organization'
@@ -98,6 +101,9 @@ app.register(deleteProject)
 app.register(getProject)
 app.register(getProjects)
 app.register(updateProject)
+app.register(getMembers)
+app.register(updateMember)
+app.register(removeMember)
 
 app.listen({ port: Number(env.SERVER_PORT) }, (err, address) => {
   if (err) {
