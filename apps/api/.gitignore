@@ -1,3 +1,6 @@
 node_modules
 # Keep environment variables out of version control
 .env
+
+# Generated files and directories for prisma client
+src/generated
