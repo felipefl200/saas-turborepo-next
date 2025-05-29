@@ -3,7 +3,6 @@
 /** @type {PrettierConfig} */
 
 const config = {
-  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-organize-imports'],
   printWidth: 80,
   tabWidth: 2,
   useTabs: false,
@@ -16,6 +15,7 @@ const config = {
   arrowParens: 'always',
   endOfLine: 'auto',
   bracketSameLine: false,
+  plugins: ['prettier-plugin-organize-imports', 'prettier-plugin-tailwindcss'],
 }
 
 export default config
