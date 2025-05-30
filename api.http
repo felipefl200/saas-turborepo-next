@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Variavel de senha
-@password = "newpassword"
+@password = "securepassword"
 
 ### Login do Usuário
 # @name login
@@ -17,7 +17,7 @@ POST http://localhost:3333/sessions/password
 Content-Type: application/json
 
 {
-  "email": "john.doe@teste.com",
+  "email": "john.doe@teste1.com",
   "password": {{password}}
 }
 
