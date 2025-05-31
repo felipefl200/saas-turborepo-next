@@ -2,6 +2,8 @@
 
 import { signInWithPassword } from '@/http/signin-with-password'
 import { HTTPError } from 'ky'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 const signInWithEmailAndPasswordSchema = z.object({
@@ -9,7 +11,7 @@ const signInWithEmailAndPasswordSchema = z.object({
   password: z.string().min(1, 'Senha é obrigatória'),
 })
 
-export async function signInWithEmailAndPassword(_: unknown, data: FormData) {
+export async function signInWithEmailAndPassword(data: FormData) {
   const resultParse = signInWithEmailAndPasswordSchema.safeParse(
     Object.fromEntries(data)
   )
@@ -32,6 +34,19 @@ export async function signInWithEmailAndPassword(_: unknown, data: FormData) {
       email,
       password,
     })
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token de autenticação não recebido.',
+        errors: null,
+      }
+    }
+    const cookieStore = await cookies()
+    cookieStore.set('token', token, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      httpOnly: true,
+    })
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json()
@@ -51,9 +66,5 @@ export async function signInWithEmailAndPassword(_: unknown, data: FormData) {
     }
   }
 
-  return {
-    success: true,
-    message: null,
-    errors: null,
-  }
+  return redirect('/')
 }
