@@ -1,3 +1,4 @@
+import { env } from '@saas/env'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -26,17 +27,15 @@ export async function authenticateWithGithub(app: FastifyInstance) {
       const { code } = request.body
 
       const githubOAuthURL = new URL(
-        'https://github.com/login/oauth/access_token',
+        'https://github.com/login/oauth/access_token'
       )
 
-      githubOAuthURL.searchParams.set('client_id', '9fa8a76a15732e03b91e')
-      githubOAuthURL.searchParams.set(
-        'client_secret',
-        '3b878be98696dc9c030683b31a71704b8b3b6976',
-      )
+      githubOAuthURL.searchParams.set('client_id', env.GITHUB_CLIENT_ID)
+      githubOAuthURL.searchParams.set('client_secret', env.GITHUB_CLIENT_SECRET)
       githubOAuthURL.searchParams.set(
         'redirect_uri',
-        'http://localhost:3000/api/auth/callback',
+        env.GITHUB_REDIRECT_URI ||
+          'http://localhost:3000/api/auth/callback/github'
       )
       githubOAuthURL.searchParams.set('code', code)
 
@@ -81,7 +80,7 @@ export async function authenticateWithGithub(app: FastifyInstance) {
 
       if (email === null) {
         throw new BadRequestError(
-          'Your GitHub account must have an email to authenticate.',
+          'Your GitHub account must have an email to authenticate.'
         )
       }
 
@@ -124,12 +123,12 @@ export async function authenticateWithGithub(app: FastifyInstance) {
         },
         {
           sign: {
-            expiresIn: '7d',
+            expiresIn: env.TOKEN_EXPIRES_IN || '7d',
           },
-        },
+        }
       )
 
       return reply.status(201).send({ token })
-    },
+    }
   )
 }
