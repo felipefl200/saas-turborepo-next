@@ -1,4 +1,6 @@
+import { getMembership } from '@/http/get-membership'
 import { getProfile } from '@/http/get-profile'
+import { defineAbilityFor } from '@saas/auth'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -7,6 +9,30 @@ export async function isAuthenticated(): Promise<boolean> {
 
   const cookieStore = await cookies()
   return !!cookieStore.get('token')?.value
+}
+
+export async function getCurrentOrgCookie() {
+  const cookieStore = await cookies()
+  return cookieStore.get('org')?.value
+}
+
+export async function getCurrentMembership() {
+  const org = await getCurrentOrgCookie()
+  if (!org) {
+    return null
+  }
+
+  const { membership } = await getMembership(org)
+  return membership
+}
+
+export async function ability() {
+  const membership = await getCurrentMembership()
+  if (!membership) {
+    return null
+  }
+
+  const permissions = defineAbilityFor({})
 }
 
 export async function auth() {
@@ -19,8 +45,10 @@ export async function auth() {
 
   try {
     const { user } = await getProfile()
+    return { user }
   } catch (error) {
     console.error('Authentication error:', error)
-    redirect('/auth/signin')
   }
+
+  return redirect('api/auth/signout') // Redirect to signout if there's an error
 }
