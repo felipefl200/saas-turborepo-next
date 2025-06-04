@@ -12,8 +12,6 @@ export function middleware(request: NextRequest) {
     response.cookies.delete('org')
   }
 
-  console.log(`Middleware triggered for path: ${pathname}`)
-
   return response
 }
 
