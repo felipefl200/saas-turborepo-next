@@ -6,7 +6,6 @@ import { redirect } from 'next/navigation'
 
 export async function isAuthenticated(): Promise<boolean> {
   // Check if the user is authenticated by verifying the presence of a token
-
   const cookieStore = await cookies()
   return !!cookieStore.get('token')?.value
 }
@@ -32,7 +31,12 @@ export async function ability() {
     return null
   }
 
-  const permissions = defineAbilityFor({})
+  const ability = defineAbilityFor({
+    id: membership.userId,
+    role: membership.role,
+  })
+
+  return ability
 }
 
 export async function auth() {
@@ -50,5 +54,5 @@ export async function auth() {
     console.error('Authentication error:', error)
   }
 
-  return redirect('api/auth/signout') // Redirect to signout if there's an error
+  return redirect('api/auth/signout')
 }

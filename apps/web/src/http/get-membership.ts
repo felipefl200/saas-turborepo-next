@@ -5,7 +5,8 @@ interface GetMembershipResponse {
   membership: {
     id: string
     role: Role
-    organization: string
+    organizationId: string
+    userId: string
   }
 }
 
