@@ -15,7 +15,7 @@ export default async function ProfileButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-3 outline-none">
-        <div className="flex flex-col items-end gap-1">
+        <div className="gap- flex flex-col items-end gap-0.5">
           <span className="text-sm font-medium">{user?.name}</span>
           <span className="text-muted-foreground text-xs">{user?.email}</span>
         </div>

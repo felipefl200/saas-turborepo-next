@@ -11,7 +11,7 @@ import { Separator } from './ui/separator'
 export default async function Header() {
   const permissions = await ability()
   return (
-    <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+    <div className="border-accent mx-auto flex max-w-[1200px] items-center justify-between border-b pb-4">
       <div className="flex items-center gap-3">
         <Image src={logo} alt="Logo" className="size-6 dark:opacity-80" />
         <Slash className="text-border hidden size-4 -rotate-[24deg] md:inline-block" />
