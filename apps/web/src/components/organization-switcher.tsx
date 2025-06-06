@@ -50,7 +50,7 @@ export default async function OrganizationSwitcher() {
           {organizations.map((organizations) => {
             return (
               <DropdownMenuItem key={organizations.id}>
-                <Link
+                <a
                   href={`/org/${organizations.slug}`}
                   className="flex items-center gap-2"
                 >
@@ -62,8 +62,8 @@ export default async function OrganizationSwitcher() {
                       {nameInitials(organizations.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="line-clamp-1">{organizations.name} </span>
-                </Link>
+                  <span className="line-clamp-1">{organizations.name}</span>
+                </a>
               </DropdownMenuItem>
             )
           })}

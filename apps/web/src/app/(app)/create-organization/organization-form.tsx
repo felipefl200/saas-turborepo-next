@@ -16,16 +16,20 @@ export default function OrganizationForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       {!success && message && (
         <Alert variant="destructive">
-          <AlertTitle>Erro ao criar uma organização</AlertTitle>
           <Icons.triangleAlert className="size-4" />
-          <AlertDescription>{message}</AlertDescription>
+          <div>
+            <AlertTitle>Erro ao criar uma organização</AlertTitle>
+            <AlertDescription>{message}</AlertDescription>
+          </div>
         </Alert>
       )}
       {success && message && (
         <Alert variant="success">
-          <AlertTitle>Dados salvos</AlertTitle>
-          <Icons.checkCircle className="fill-muted-foreground size-4" />
-          <AlertDescription>{message}</AlertDescription>
+          <Icons.checkCircle className="size-4" /> {/* Ícone primeiro */}
+          <div>
+            <AlertTitle>Dados salvos</AlertTitle>
+            <AlertDescription>Organização criada com sucesso</AlertDescription>
+          </div>
         </Alert>
       )}
       <div className="space-y-1">
@@ -46,6 +50,7 @@ export default function OrganizationForm() {
           inputMode="url"
           placeholder="dominio.com"
         />
+
         {errors?.domain && (
           <p className="text-sm text-red-500 dark:text-red-400">
             {errors.domain}
@@ -53,14 +58,16 @@ export default function OrganizationForm() {
         )}
       </div>
 
-      <div className="flex flex-row-reverse items-center gap-2 justify-self-start">
-        <Label htmlFor="shouldAttachUsersByDomain">
-          Deseja adicionar usuários pelo domínio?
-        </Label>
-        <Checkbox
-          name="shouldAttachUsersByDomain"
-          id="shouldAttachUsersByDomain"
-        />
+      <div className="items-center gap-2">
+        <div className="flex flex-row-reverse gap-2 justify-self-start">
+          <Label htmlFor="shouldAttachUsersByDomain">
+            Deseja adicionar usuários pelo domínio?
+          </Label>
+          <Checkbox
+            name="shouldAttachUsersByDomain"
+            id="shouldAttachUsersByDomain"
+          />
+        </div>
         {errors?.shouldAttachUsersByDomain && (
           <p className="text-sm text-red-500 dark:text-red-400">
             {errors.shouldAttachUsersByDomain}
