@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run env:load next dev --turbopack",
+    "dev": "NODE_OPTIONS='--inspect' npm run env:load next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
