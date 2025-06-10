@@ -1,4 +1,5 @@
 import { isAuthenticated } from '@/auth/auth'
+import Header from '@/components/header'
 import { redirect } from 'next/navigation'
 
 export default async function AuthLayout({
@@ -6,7 +7,7 @@ export default async function AuthLayout({
   sheet,
 }: Readonly<{
   children: React.ReactNode
-  sheet: React.ReactNode | undefined
+  sheet?: React.ReactNode
 }>) {
   if (!isAuthenticated()) {
     redirect('/auth/signin')
@@ -14,8 +15,11 @@ export default async function AuthLayout({
 
   return (
     <>
-      {children}
-      {sheet}
+      <div className="space-y-4 py-4">
+        <Header />
+        {children}
+        {sheet}
+      </div>
     </>
   )
 }
