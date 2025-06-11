@@ -28,7 +28,7 @@ export default function SignUpForm() {
           </Alert>
         )}
         <div className="space-y-1">
-          <Label>Nome</Label>
+          <Label htmlFor="name">Nome</Label>
           <Input type="text" id="name" name="name" />
           {errors?.name && (
             <p className="text-sm text-red-500 dark:text-red-400">
@@ -37,7 +37,7 @@ export default function SignUpForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label>Email</Label>
+          <Label htmlFor="email">Email</Label>
           <Input type="email" id="email" name="email" />
           {errors?.email && (
             <p className="text-sm text-red-500 dark:text-red-400">
@@ -47,7 +47,7 @@ export default function SignUpForm() {
         </div>
 
         <div className="space-y-1">
-          <Label>Senha</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input type="password" id="password" name="password" />
           {errors?.password && (
             <p className="text-sm text-red-500 dark:text-red-400">
@@ -56,7 +56,7 @@ export default function SignUpForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label>Confirme sua senha</Label>
+          <Label htmlFor="confirmPassword">Confirme sua senha</Label>
           <Input type="password" id="confirmPassword" name="confirmPassword" />
           {errors?.confirmPassword && (
             <p className="text-sm text-red-500 dark:text-red-400">
