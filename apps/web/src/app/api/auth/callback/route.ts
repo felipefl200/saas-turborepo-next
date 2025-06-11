@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   const cookieStore = await cookies()
   cookieStore.set('token', token, {
     path: '/',
-    httpOnly: true,
+    httpOnly: false,
     maxAge: 60 * 60 * 24 * 7, // 7 days
   })
 
