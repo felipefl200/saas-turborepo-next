@@ -20,7 +20,6 @@ export async function getMembers(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           params: z.object({
             orgSlug: z.string().min(1).max(255),
-            projectSlug: z.string().min(1).max(255),
           }),
           response: {
             200: z.object({
@@ -40,7 +39,7 @@ export async function getMembers(app: FastifyInstance) {
       },
 
       async (request, reply) => {
-        const { orgSlug, projectSlug } = request.params
+        const { orgSlug } = request.params
         const userId = await request.getCurrentUserId()
         const { organization, membership } =
           await request.getUserMembership(orgSlug)
@@ -74,17 +73,18 @@ export async function getMembers(app: FastifyInstance) {
           },
         })
 
-        const membersWithRoles = members.map(
-          ({ user: { id: userId, ...user }, ...member }) => {
-            return {
-              ...user,
-              ...member,
-              userId,
-            }
+        const membersWithRoles = members.map((member) => {
+          return {
+            id: member.id,
+            userId: member.user.id,
+            role: member.role,
+            name: member.user.name,
+            email: member.user.email,
+            avatarUrl: member.user.avatarUrl,
           }
-        )
+        })
 
-        return reply.status(200).send({ membersWithRoles })
+        return reply.status(200).send({ members: membersWithRoles })
       }
     )
 }
