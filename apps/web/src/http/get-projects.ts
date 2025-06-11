@@ -12,7 +12,7 @@ interface GetProjectsResponse {
     createdAt: string
     owner: {
       id: string
-      name: string
+      name: string | null
       avatarUrl: string | null
     }
   }[]
@@ -22,5 +22,7 @@ export async function getProjects(org: string): Promise<GetProjectsResponse> {
   const result = await api
     .get(`organizations/${org}/projects`)
     .json<GetProjectsResponse>()
+  console.log('getProjects result', result)
+
   return result
 }

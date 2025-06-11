@@ -24,13 +24,19 @@ export async function getProjects(app: FastifyInstance) {
             200: z.object({
               projects: z.array(
                 z.object({
-                  name: z.string(),
                   id: z.string().uuid(),
+                  description: z.string(),
+                  name: z.string(),
                   slug: z.string(),
-                  avatarUrl: z.string().nullable(),
-                  ownerId: z.string().uuid(),
+                  avatarUrl: z.string().url().nullable(),
                   organizationId: z.string().uuid(),
-                  createdAt: z.string().datetime(),
+                  ownerId: z.string().uuid(),
+                  createdAt: z.date(),
+                  owner: z.object({
+                    id: z.string().uuid(),
+                    name: z.string().nullable(),
+                    avatarUrl: z.string().url().nullable(),
+                  }),
                 })
               ),
             }),
@@ -59,11 +65,20 @@ export async function getProjects(app: FastifyInstance) {
           select: {
             id: true,
             name: true,
+            description: true,
             slug: true,
-            avatarUrl: true,
             ownerId: true,
+            avatarUrl: true,
             organizationId: true,
             createdAt: true,
+            owner: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                avatarUrl: true,
+              },
+            },
           },
           orderBy: {
             createdAt: 'desc',
