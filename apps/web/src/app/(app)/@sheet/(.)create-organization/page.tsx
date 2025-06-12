@@ -9,8 +9,6 @@ import {
 import OrganizationForm from '../../create-organization/organization-form'
 
 export default function CreateOrganizationPage() {
-  console.log('CreateOrganizationPage rendered')
-
   return (
     <SheetI defaultOpen>
       <SheetContentI className="w-[400px] sm:w-[540px]">

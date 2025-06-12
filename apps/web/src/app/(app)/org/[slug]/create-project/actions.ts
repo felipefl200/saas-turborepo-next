@@ -24,8 +24,6 @@ export async function createProjectAction(data: FormData) {
 
   const { name, description } = resultParse.data
 
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-
   try {
     const currentOrg = await getCurrentOrgCookie()
     if (!currentOrg) {

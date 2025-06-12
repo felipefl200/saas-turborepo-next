@@ -22,7 +22,6 @@ export default function ProjectSwitcher() {
     slug: string
     project: string
   }>()
-  console.log('slug', orgSlug)
 
   const { data, isLoading } = useQuery({
     queryKey: [orgSlug, 'projects'],
@@ -34,8 +33,6 @@ export default function ProjectSwitcher() {
     data && projectSlug
       ? data.projects.find((p) => p.slug === projectSlug)
       : null
-
-  console.log(data)
 
   return (
     <DropdownMenu>
