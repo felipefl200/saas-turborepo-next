@@ -22,7 +22,5 @@ export async function getProjects(org: string): Promise<GetProjectsResponse> {
   const result = await api
     .get(`organizations/${org}/projects`)
     .json<GetProjectsResponse>()
-  console.log('getProjects result', result)
-
   return result
 }
