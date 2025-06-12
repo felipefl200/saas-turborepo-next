@@ -71,7 +71,7 @@ export default function ProjectSwitcher() {
               return (
                 <DropdownMenuItem key={project.id}>
                   <a
-                    href={`/org/${project.slug}/projects/${project.slug}`}
+                    href={`/org/${orgSlug}/project/${project.slug}`}
                     className="flex items-center gap-2"
                   >
                     <Avatar>

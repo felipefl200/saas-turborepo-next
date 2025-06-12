@@ -1,7 +1,3 @@
 export default function ProjectPage() {
-  return (
-    <div>
-      <h1>Project Page</h1>
-    </div>
-  )
+  return <div className="mx-auto max-w-3xl">Projeto</div>
 }

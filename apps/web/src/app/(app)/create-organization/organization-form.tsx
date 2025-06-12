@@ -33,7 +33,7 @@ export default function OrganizationForm() {
         </Alert>
       )}
       <div className="space-y-1">
-        <Label>Nome da organização</Label>
+        <Label htmlFor="name">Nome da organização</Label>
         <Input type="text" id="name" name="name" />
         {errors?.name && (
           <p className="text-sm text-red-500 dark:text-red-400">
@@ -42,7 +42,7 @@ export default function OrganizationForm() {
         )}
       </div>
       <div className="space-y-1">
-        <Label>Email do domínio</Label>
+        <Label htmlFor="domain">Email do domínio</Label>
         <Input
           type="text"
           id="domain"
