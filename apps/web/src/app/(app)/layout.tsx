@@ -1,5 +1,6 @@
 import { isAuthenticated } from '@/auth/auth'
 import Header from '@/components/header'
+import { Tabs } from '@/components/tabs'
 import { redirect } from 'next/navigation'
 
 export default async function AuthLayout({
@@ -17,6 +18,7 @@ export default async function AuthLayout({
     <>
       <div className="space-y-4 py-4">
         <Header />
+        <Tabs />
         {children}
         {sheet}
       </div>

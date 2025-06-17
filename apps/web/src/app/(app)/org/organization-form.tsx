@@ -6,19 +6,32 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useFormState } from '@/hook/use-form-state'
-import { createOrganizationAction } from './actions'
+import { createOrganizationAction, updateOrganizationAction } from './actions'
+import { OrganizationFormData } from './organization-schema'
 
-export default function OrganizationForm() {
-  const [{ success, errors, message }, handleSubmit, isPending] = useFormState(
-    createOrganizationAction
-  )
+interface OrganizationFormProps {
+  isUpdating?: boolean
+  initialData?: OrganizationFormData
+}
+
+export default function OrganizationForm({
+  initialData,
+  isUpdating = false,
+}: OrganizationFormProps) {
+  const formAction = isUpdating
+    ? updateOrganizationAction
+    : createOrganizationAction
+  const [{ success, errors, message }, handleSubmit, isPending] =
+    useFormState(formAction)
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {!success && message && (
         <Alert variant="destructive">
           <Icons.triangleAlert className="size-4" />
           <div>
-            <AlertTitle>Erro ao criar uma organização</AlertTitle>
+            <AlertTitle>
+              Erro ao {isUpdating ? 'atualizar' : 'criar'} uma organização
+            </AlertTitle>
             <AlertDescription>{message}</AlertDescription>
           </div>
         </Alert>
@@ -28,13 +41,20 @@ export default function OrganizationForm() {
           <Icons.checkCircle className="size-4" /> {/* Ícone primeiro */}
           <div>
             <AlertTitle>Dados salvos</AlertTitle>
-            <AlertDescription>Organização criada com sucesso</AlertDescription>
+            <AlertDescription>
+              Organização {isUpdating ? 'atualizada' : 'criada'} com sucesso
+            </AlertDescription>
           </div>
         </Alert>
       )}
       <div className="space-y-1">
         <Label htmlFor="name">Nome da organização</Label>
-        <Input type="text" id="name" name="name" />
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          defaultValue={initialData?.name}
+        />
         {errors?.name && (
           <p className="text-sm text-red-500 dark:text-red-400">
             {errors.name[0]}
@@ -49,6 +69,7 @@ export default function OrganizationForm() {
           name="domain"
           inputMode="url"
           placeholder="dominio.com"
+          defaultValue={initialData?.domain || ''}
         />
 
         {errors?.domain && (
@@ -66,6 +87,7 @@ export default function OrganizationForm() {
           <Checkbox
             name="shouldAttachUsersByDomain"
             id="shouldAttachUsersByDomain"
+            defaultChecked={initialData?.shouldAttachUsersByDomain || false}
           />
         </div>
         {errors?.shouldAttachUsersByDomain && (
@@ -76,7 +98,13 @@ export default function OrganizationForm() {
       </div>
 
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? <Icons.spinner className="animate-spin" /> : 'Salvar'}
+        {isPending ? (
+          <Icons.spinner className="animate-spin" />
+        ) : isUpdating ? (
+          'Atualizar Organização'
+        ) : (
+          'Criar Organização'
+        )}
       </Button>
     </form>
   )

@@ -6,11 +6,21 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useFormState } from '@/hook/use-form-state'
+import { queryClient } from '@/lib/react-query'
+import { useParams } from 'next/navigation'
 import { createProjectAction } from './actions'
 
 export default function ProjectForm() {
-  const [{ success, errors, message }, handleSubmit, isPending] =
-    useFormState(createProjectAction)
+  const { slug: orgSlug } = useParams<{ slug: string }>()
+
+  const [{ success, errors, message }, handleSubmit, isPending] = useFormState(
+    createProjectAction,
+    () => {
+      queryClient.invalidateQueries({
+        queryKey: ['projects', orgSlug],
+      })
+    }
+  )
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {!success && message && (

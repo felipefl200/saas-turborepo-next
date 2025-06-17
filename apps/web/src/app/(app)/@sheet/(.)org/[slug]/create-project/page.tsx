@@ -1,5 +1,4 @@
-'use client'
-import OrganizationForm from '@/app/(app)/org/organization-form'
+import ProjectForm from '@/app/(app)/org/[slug]/create-project/project-form'
 import {
   SheetContentI,
   SheetDescriptionI,
@@ -8,18 +7,18 @@ import {
   SheetTitleI,
 } from '@/components/intercepted-sheet-content'
 
-export default function CreateOrganizationPage() {
+export default function CreateProjectPage() {
   return (
     <SheetI defaultOpen>
       <SheetContentI className="w-[400px] sm:w-[540px]">
         <SheetHeaderI>
-          <SheetTitleI>Criar nova organização</SheetTitleI>
+          <SheetTitleI>Criar novo projeto</SheetTitleI>
           <SheetDescriptionI>
-            Preencha os detalhes da sua nova organização. Você pode adicionar
-            mais informações depois.
+            Preencha os detalhes do seu novo projeto. Você pode adicionar mais
+            informações depois.
           </SheetDescriptionI>
           <div className="py-4">
-            <OrganizationForm />
+            <ProjectForm />
           </div>
         </SheetHeaderI>
       </SheetContentI>

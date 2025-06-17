@@ -12,7 +12,7 @@ export async function shutdownOrganization(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .delete(
-      '/organizations',
+      '/organizations/:slug',
       {
         schema: {
           tags: ['Organizations'],
@@ -43,11 +43,18 @@ export async function shutdownOrganization(app: FastifyInstance) {
           )
         }
 
-        await prisma.organization.delete({
-          where: {
-            id: organization.id,
-          },
-        })
+        prisma.$transaction([
+          prisma.member.deleteMany({
+            where: {
+              organizationId: organization.id,
+            },
+          }),
+          prisma.organization.delete({
+            where: {
+              id: organization.id,
+            },
+          }),
+        ])
 
         reply.status(204).send()
       }

@@ -1,4 +1,4 @@
-import OrganizationForm from './organization-form'
+import OrganizationForm from '@/app/(app)/org/organization-form'
 
 export default function CreateOrganizationPage() {
   return (
