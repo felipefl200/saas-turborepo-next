@@ -12,6 +12,7 @@ export async function createProject({ name, description, org }: CreateProject) {
   const result = await api
     .post(`organizations/${org}/projects`, {
       json: { name, description },
+      next: { tags: [`org-${org}`] },
     })
     .json<CreateProjectResponse>()
 }

@@ -70,6 +70,6 @@ GET http://localhost:3333/organization/organization-test/membership
 Authorization: Bearer {{tokenLogin}}
 
 ### Shutdown Organização
-DELETE http://localhost:3333/organizations/organization-test
+DELETE http://localhost:3333/organizations/teste2
 Authorization: Bearer {{tokenLogin}}
 

@@ -1,3 +1,4 @@
+import { ShutdownOrganizationButton } from '@/app/(app)/org/[slug]/settings/shudown-organization-button'
 import { ability, getCurrentOrgCookie } from '@/auth/auth'
 import {
   Card,
@@ -8,7 +9,6 @@ import {
 } from '@/components/ui/card'
 import { getOrganization } from '@/http/get-organization'
 import OrganizationForm from '../../organization-form'
-import ShutdownOrganizationButton from './shudown-organization-button'
 
 export default async function SettingsPage() {
   const currentOrg = await getCurrentOrgCookie()
@@ -55,7 +55,7 @@ export default async function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ShutdownOrganizationButton />
+            <ShutdownOrganizationButton organization={organization.slug} />
           </CardContent>
         </Card>
       )}

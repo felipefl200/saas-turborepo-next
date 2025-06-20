@@ -2,9 +2,11 @@
 
 import { getCurrentOrgCookie } from '@/auth/auth'
 import { createOrganization } from '@/http/create-organization'
+import { shutdownOrganization } from '@/http/shutdown-organization'
 import { updateOrganization } from '@/http/update-organization'
 import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { organizationSchema } from './organization-schema'
 
 export async function createOrganizationAction(data: FormData) {
@@ -108,5 +110,20 @@ export async function updateOrganizationAction(data: FormData) {
     success: true,
     message: 'Organização atualizada com sucesso',
     errors: null,
+  }
+}
+
+export async function shutdownOrganizationAction() {
+  const organization = await getCurrentOrgCookie()
+
+  if (!organization) {
+    throw new Error('Nenhuma organização selecionada')
+  }
+
+  try {
+    await shutdownOrganization({ orgSlug: organization })
+    redirect('/')
+  } catch (error) {
+    throw error
   }
 }

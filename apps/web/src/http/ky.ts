@@ -3,6 +3,11 @@ import ky from 'ky'
 
 export const api = ky.create({
   prefixUrl: 'http://localhost:3333',
+  timeout: 30000, // 30 segundos
+  retry: {
+    limit: 2,
+    methods: ['get', 'post', 'put', 'delete'],
+  },
   hooks: {
     beforeRequest: [
       async (request) => {
@@ -18,10 +23,16 @@ export const api = ky.create({
         if (token) {
           request.headers.set('Authorization', `Bearer ${token}`)
         }
+
         if (request.method !== 'DELETE') {
           request.headers.set('Content-Type', 'application/json')
         }
         request.headers.set('Accept', 'application/json')
+      },
+    ],
+    beforeError: [
+      (error) => {
+        return error
       },
     ],
   },

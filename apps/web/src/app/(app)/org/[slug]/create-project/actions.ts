@@ -3,6 +3,7 @@
 import { getCurrentOrgCookie } from '@/auth/auth'
 import { createProject } from '@/http/create-project'
 import { HTTPError } from 'ky'
+import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 const projectSchema = z.object({
@@ -38,6 +39,9 @@ export async function createProjectAction(data: FormData) {
       name,
       description,
     })
+
+    // Invalidar cache do React Query para projects
+    revalidateTag(`projects-${currentOrg}`)
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json()

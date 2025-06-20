@@ -44,6 +44,16 @@ export async function shutdownOrganization(app: FastifyInstance) {
         }
 
         prisma.$transaction([
+          prisma.invite.deleteMany({
+            where: {
+              organizationId: organization.id,
+            },
+          }),
+          prisma.project.deleteMany({
+            where: {
+              organizationId: organization.id,
+            },
+          }),
           prisma.member.deleteMany({
             where: {
               organizationId: organization.id,

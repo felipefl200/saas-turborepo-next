@@ -7,20 +7,23 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useFormState } from '@/hook/use-form-state'
 import { queryClient } from '@/lib/react-query'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { createProjectAction } from './actions'
 
 export default function ProjectForm() {
   const { slug: orgSlug } = useParams<{ slug: string }>()
+  const router = useRouter()
 
   const [{ success, errors, message }, handleSubmit, isPending] = useFormState(
     createProjectAction,
     () => {
+      // Invalidar a query com a mesma chave usada no ProjectSwitcher
       queryClient.invalidateQueries({
-        queryKey: ['projects', orgSlug],
+        queryKey: [orgSlug, 'projects'],
       })
     }
   )
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {!success && message && (
