@@ -16,3 +16,10 @@ export function nameInitials(name: string) {
     names[names.length - 1].charAt(0).toUpperCase()
   )
 }
+
+export function formatCurrency(value: number) {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(value)
+}

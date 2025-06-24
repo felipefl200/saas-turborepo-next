@@ -8,7 +8,7 @@ interface GetOrganization {
     domain: string | null
     avatarUrl: string | null
     shouldAttachUsersByDomain: boolean
-    owner: string
+    ownerId: string
     createdAt: string
     updatedAt: string
   }

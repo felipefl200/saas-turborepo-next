@@ -45,7 +45,7 @@ export function ShutdownOrganizationButton({
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" className="w-56">
+          <Button variant="destructive" className="w-full">
             <XCircle className="mr-2 size-4" />
             Shutdown organization
           </Button>

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card'
 import { getOrganization } from '@/http/get-organization'
 import OrganizationForm from '../../organization-form'
+import Billing from './billing'
 
 export default async function SettingsPage() {
   const currentOrg = await getCurrentOrgCookie()
@@ -19,7 +20,7 @@ export default async function SettingsPage() {
 
   const { organization } = await getOrganization(currentOrg!)
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-7xl space-y-4">
       <h1 className="text-2xl font-bold">Settings</h1>
       <div className="space-y-4">
         {canUpdateBilling && (
@@ -45,7 +46,12 @@ export default async function SettingsPage() {
           </Card>
         )}
       </div>
-      {canGetBilling && <div>Billing</div>}
+      {canGetBilling && (
+        <div>
+          <h1 className="text-2xl font-bold">Cobrança</h1>
+          <Billing />
+        </div>
+      )}
       {canShutdownOrganization && (
         <Card>
           <CardHeader>
@@ -54,7 +60,7 @@ export default async function SettingsPage() {
               Aqui você pode encerrar sua organização. Esta ação é irreversível.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <ShutdownOrganizationButton organization={organization.slug} />
           </CardContent>
         </Card>
