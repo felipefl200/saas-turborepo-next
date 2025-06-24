@@ -1,13 +1,30 @@
-'user server'
+'use server'
 
-export async function removeMemberAction(formData: FormData) {
-  const userId = formData.get('userId') as string
-  const organizationSlug = formData.get('organization') as string
+import { getCurrentOrgCookie } from '@/auth/auth'
+import { removeMember } from '@/http/remove-member'
+import { updateMember } from '@/http/update-member'
+import { Role } from '@saas/auth'
+import { revalidateTag } from 'next/cache'
 
-  if (!userId || !organizationSlug) {
-    throw new Error('Missing userId or organization slug')
-  }
+export async function removeMemberAction(memberId: string) {
+  const currentOrg = await getCurrentOrgCookie()
 
-  const { removeMember } = await import('@/app/org/actions')
-  return removeMember({ userId, organizationSlug })
+  await removeMember({
+    orgSlug: currentOrg!,
+    memberId,
+  })
+
+  revalidateTag(`${currentOrg}-members`)
+}
+
+export async function updateMemberAction(memberId: string, role: Role) {
+  const currentOrg = await getCurrentOrgCookie()
+
+  await updateMember({
+    orgSlug: currentOrg!,
+    memberId,
+    role,
+  })
+
+  revalidateTag(`${currentOrg}-members`)
 }

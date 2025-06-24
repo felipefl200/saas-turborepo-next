@@ -1,4 +1,15 @@
 import { ability, getCurrentOrgCookie } from '@/auth/auth'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
@@ -9,6 +20,8 @@ import { nameInitials } from '@/lib/utils'
 import { organizationSchema } from '@saas/auth'
 import { ArrowLeftRight, Crown, UserMinus } from 'lucide-react'
 import Image from 'next/image'
+import { removeMemberAction } from './actions'
+import UpdateMemberRoleSelect from './update-member-role-select'
 
 export default async function MembersList() {
   const currentOrg = await getCurrentOrgCookie()
@@ -75,20 +88,67 @@ export default async function MembersList() {
                           Transferir propriedade
                         </Button>
                       )}
+
+                      <UpdateMemberRoleSelect
+                        memberId={member.id}
+                        value={member.role}
+                        disabled={
+                          member.id === membership.id ||
+                          member.userId === organization.ownerId ||
+                          permissions?.cannot('update', 'User')
+                        }
+                      />
                       {permissions?.can('delete', 'User') && (
-                        <form action="">
-                          <Button
-                            disabled={
-                              member.id === membership.id ||
-                              member.userId === organization.ownerId
-                            }
-                            size="sm"
-                            variant="destructive"
-                          >
-                            <UserMinus className="mr-2 size-4" />
-                            Remover
-                          </Button>
-                        </form>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="destructive"
+                              disabled={
+                                member.id === membership.id ||
+                                member.userId === organization.ownerId
+                              }
+                            >
+                              <UserMinus className="mr-2 size-4" />
+                              Remover membro
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Você tem certeza?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta ação não pode ser desfeita. Isso irá
+                                remover permanentemente esse usuário da
+                                organização{' '}
+                                <strong>“{organization.name}”</strong>
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <form
+                                action={removeMemberAction.bind(
+                                  null,
+                                  member.id
+                                )}
+                              >
+                                <AlertDialogAction asChild>
+                                  <Button
+                                    disabled={
+                                      member.id === membership.id ||
+                                      member.userId === organization.ownerId
+                                    }
+                                    type="submit"
+                                    variant="destructive"
+                                  >
+                                    Remover membro
+                                  </Button>
+                                </AlertDialogAction>
+                              </form>
+                              {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       )}
                     </div>
                   </TableCell>

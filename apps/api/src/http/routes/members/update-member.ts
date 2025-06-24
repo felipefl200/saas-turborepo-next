@@ -1,8 +1,8 @@
+import { Role } from '@/generated/prisma'
 import { auth } from '@/http/middlewares/auth'
 import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils/get-user-permissons'
-import { roleSchema } from '@saas/auth'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -23,7 +23,7 @@ export async function updateMember(app: FastifyInstance) {
             memberId: z.string().uuid(),
           }),
           body: z.object({
-            role: roleSchema,
+            role: z.nativeEnum(Role),
             name: z.string().min(1).max(255).optional(),
             email: z.string().email().optional(),
             avatarUrl: z.string().url().optional(),
