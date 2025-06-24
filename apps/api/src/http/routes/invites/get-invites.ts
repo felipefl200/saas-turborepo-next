@@ -1,8 +1,8 @@
+import { Role } from '@/generated/prisma'
 import { auth } from '@/http/middlewares/auth'
 import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils/get-user-permissons'
-import { roleSchema } from '@saas/auth'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -27,7 +27,7 @@ export async function getInvites(app: FastifyInstance) {
                 z.object({
                   id: z.string().uuid(),
                   email: z.string().email(),
-                  role: roleSchema,
+                  role: z.nativeEnum(Role),
                   createdAt: z.date(),
                   author: z
                     .object({

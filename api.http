@@ -73,3 +73,6 @@ Authorization: Bearer {{tokenLogin}}
 DELETE http://localhost:3333/organizations/teste2
 Authorization: Bearer {{tokenLogin}}
 
+### Get Invites
+GET http://localhost:3333/organization/organization-test/invites
+Authorization: Bearer {{tokenLogin}}
