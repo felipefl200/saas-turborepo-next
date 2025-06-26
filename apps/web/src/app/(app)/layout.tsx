@@ -16,7 +16,7 @@ export default async function AuthLayout({
 
   return (
     <>
-      <div className="space-y-4 py-4">
+      <div className="space-y-2 py-4">
         <Header />
         <Tabs />
         {children}
