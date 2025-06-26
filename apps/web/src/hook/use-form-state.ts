@@ -1,4 +1,4 @@
-import { FormEvent, useState, useTransition } from 'react'
+import { FormEvent, useEffect, useState, useTransition } from 'react'
 
 interface FormState {
   success: boolean
@@ -9,7 +9,8 @@ interface FormState {
 export function useFormState(
   action: (data: FormData) => Promise<FormState>,
   onSuccess?: () => void | void,
-  initialState?: FormState
+  initialState?: FormState,
+  resetDelayMessages: number = 3000 // Tempo em milissegundos para resetar mensagens
 ) {
   const [isPending, startTransition] = useTransition()
 
@@ -21,6 +22,21 @@ export function useFormState(
     }
   )
 
+  // Timer para resetar mensagens após delay
+  useEffect(() => {
+    if (formState.message || formState.errors) {
+      const timer = setTimeout(() => {
+        setFormState((prev) => ({
+          ...prev,
+          message: null,
+          errors: null,
+        }))
+      }, resetDelayMessages)
+
+      return () => clearTimeout(timer)
+    }
+  }, [formState.message, formState.errors, resetDelayMessages])
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -29,8 +45,9 @@ export function useFormState(
 
     startTransition(async () => {
       const state = await action(data)
-      if (state.success && onSuccess) {
-        onSuccess()
+      if (state.success) {
+        form.reset()
+        if (onSuccess) onSuccess()
       }
       setFormState(state)
     })

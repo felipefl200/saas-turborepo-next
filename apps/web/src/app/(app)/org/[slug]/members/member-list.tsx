@@ -36,7 +36,7 @@ export default async function MembersList() {
   const authOrganization = organizationSchema.parse(organization)
 
   return (
-    <div className="mx-auto max-w-7xl space-y-2">
+    <div className="space-y-2">
       <h2 className="text-lg font-semibold">Membros</h2>
       <div className="rounded border">
         <Table>

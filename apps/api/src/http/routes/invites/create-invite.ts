@@ -1,9 +1,9 @@
+import { Role } from '@/generated/prisma'
 import { auth } from '@/http/middlewares/auth'
 import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { UnauthorizedError } from '@/http/routes/_errors/unauthorized-error'
 import { prisma } from '@/lib/prisma'
 import { getUserPermissions } from '@/utils/get-user-permissons'
-import { roleSchema } from '@saas/auth'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -21,7 +21,7 @@ export async function createInvite(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           body: z.object({
             email: z.string().email(),
-            role: roleSchema,
+            role: z.nativeEnum(Role),
           }),
           params: z.object({
             slug: z.string().min(1).max(255),
@@ -49,7 +49,7 @@ export async function createInvite(app: FastifyInstance) {
 
         const { email, role } = request.body
 
-        const [, domain] = email
+        const [, domain] = email.split('@')
 
         if (
           organization.shouldAttachUsersByDomain &&
