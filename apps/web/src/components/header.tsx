@@ -13,24 +13,27 @@ import { Separator } from './ui/separator'
 export default async function Header() {
   const permissions = await ability()
   return (
-    <div className="border-accent mx-auto flex max-w-[1200px] items-center justify-between border-b pb-4">
-      <div className="flex items-center gap-3">
-        <Link href="/">
-          <Image src={logo} alt="Logo" className="size-6 dark:opacity-80" />
-        </Link>
-        <Slash className="text-border hidden size-4 -rotate-[24deg] md:inline-block" />
-        <OrganizationSwitcher />
-        {permissions?.can('read', 'Project') && (
-          <>
-            <Slash className="text-border hidden size-4 -rotate-[24deg] md:inline-block" />
-            <ProjectSwitcher />
-          </>
-        )}
-      </div>
-      <div className="flex items-center gap-4">
-        <ThemeSwitcher />
-        <Separator orientation="vertical" className="py-4" />
-        <ProfileButton />
+    <div className="relative pb-4">
+      <Separator className="absolute bottom-0" />
+      <div className="mx-auto flex max-w-7xl items-center justify-between p-2">
+        <div className="flex items-center gap-3">
+          <Link href="/">
+            <Image src={logo} alt="Logo" className="size-6 dark:opacity-80" />
+          </Link>
+          <Slash className="text-border hidden size-4 -rotate-[24deg] md:inline-block" />
+          <OrganizationSwitcher />
+          {permissions?.can('read', 'Project') && (
+            <>
+              <Slash className="text-border hidden size-4 -rotate-[24deg] md:inline-block" />
+              <ProjectSwitcher />
+            </>
+          )}
+        </div>
+        <div className="flex items-center gap-4">
+          <ThemeSwitcher />
+          <Separator orientation="vertical" className="py-4" />
+          <ProfileButton />
+        </div>
       </div>
     </div>
   )

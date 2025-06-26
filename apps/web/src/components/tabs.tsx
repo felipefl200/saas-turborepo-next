@@ -12,8 +12,8 @@ export async function Tabs({}) {
   const canGetMembers = permissions?.can('read', 'User')
   const canGetProjects = permissions?.can('read', 'Project')
   return (
-    <div className="border-b-1 pb-4">
-      <nav className="mx-auto flex max-w-[1200px] items-center gap-2">
+    <div className="mx-auto max-w-7xl border-b-1 pb-2">
+      <nav className="mx-auto flex max-w-7xl items-center gap-2">
         <Button
           variant="ghost"
           size="sm"
