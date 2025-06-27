@@ -24,7 +24,7 @@ export const api = ky.create({
           request.headers.set('Authorization', `Bearer ${token}`)
         }
 
-        if (request.method !== 'DELETE') {
+        if (request.body) {
           request.headers.set('Content-Type', 'application/json')
         }
         request.headers.set('Accept', 'application/json')

@@ -1,6 +1,6 @@
 import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-import { roleSchema } from '@saas/auth'
+import { roleSchema } from '@saas/auth/src/types'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'

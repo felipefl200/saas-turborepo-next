@@ -9,9 +9,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { getProjects } from '@/http/get-projects'
+import { dateFromNow } from '@/lib/dateFromNow'
 import { nameInitials } from '@/lib/utils'
-import { formatDistanceToNow } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { ArrowRight } from 'lucide-react'
 
 export default async function ProjectList() {
@@ -46,10 +45,7 @@ export default async function ProjectList() {
               <span className="text-foreground truncate font-semibold">
                 {project.owner.name || 'Usuário'}
               </span>
-              {formatDistanceToNow(new Date(project.createdAt), {
-                addSuffix: true,
-                locale: ptBR,
-              })}
+              {dateFromNow(project.createdAt)}
             </span>
             <Button size="xs" variant="outline" className="ml-auto">
               Ver detalhes

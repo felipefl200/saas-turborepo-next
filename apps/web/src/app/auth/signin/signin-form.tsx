@@ -9,12 +9,14 @@ import { useFormState } from '@/hook/use-form-state'
 import { Separator } from '@radix-ui/react-separator'
 import Link from 'next/link'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { signInWithGithub } from '../actions'
 import { signInWithEmailAndPassword } from './actions'
 
 export function SignInForm() {
   const router = useRouter()
+
+  const searchParams = useSearchParams()
   const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
     signInWithEmailAndPassword,
     () => {
@@ -32,7 +34,12 @@ export function SignInForm() {
         )}
         <div className="space-y-1">
           <Label htmlFor="email">Email</Label>
-          <Input type="email" id="email" name="email" />
+          <Input
+            type="email"
+            id="email"
+            name="email"
+            defaultValue={searchParams.get('email') || ''}
+          />
           {errors?.email && (
             <p className="text-sm text-red-500 dark:text-red-400">
               {errors.email}

@@ -1,3 +1,4 @@
+import { acceptInvite } from '@/http/accept-invite'
 import { signInWithGithub } from '@/http/signin-with-github'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
@@ -21,6 +22,14 @@ export async function GET(request: NextRequest) {
     httpOnly: false,
     maxAge: 60 * 60 * 24 * 7, // 7 days
   })
+
+  const inviteId = cookieStore.get('inviteId')?.value
+  if (inviteId) {
+    try {
+      await acceptInvite({ inviteId })
+      cookieStore.delete('inviteId')
+    } catch (error) {}
+  }
 
   const redirectUrl = request.nextUrl.clone()
   redirectUrl.pathname = '/'
