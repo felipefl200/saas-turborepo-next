@@ -6,8 +6,10 @@ import { acceptInvite } from '@/http/accept-invite'
 import { getInvite } from '@/http/get-invite'
 import { dateFromNow } from '@/lib/dateFromNow'
 import { nameInitials } from '@/lib/utils'
-import { CheckCircle, LogIn } from 'lucide-react'
+import { CheckCircle, LogIn, LogOut } from 'lucide-react'
+import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 interface InvitePageProps {
@@ -35,6 +37,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
   async function acceptInviteAction() {
     'use server'
     await acceptInvite({ inviteId })
+    revalidateTag('organizations')
     redirect('/')
   }
   return (
@@ -76,9 +79,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
               Aceitar convite
             </Button>
           </form>
-        ) : (
-          <></>
-        )}
+        ) : null}
 
         {userIsAuthenticatedWithSameEmailFromInvite ? (
           <form action={acceptInviteAction}>
@@ -87,6 +88,32 @@ export default async function InvitePage({ params }: InvitePageProps) {
               Conectar-se a {invite.organization.name}
             </Button>
           </form>
+        ) : null}
+
+        {isUserAuthenticated && !userIsAuthenticatedWithSameEmailFromInvite ? (
+          <div className="space-y-4">
+            <p className="text-muted-foreground text-center text-sm leading-relaxed text-balance">
+              Esse convite é destinado a{' '}
+              <span className="text-foreground font-medium">
+                {invite.email},
+              </span>
+              mas você já está autenticado com{' '}
+              <span className="text-foreground font-medium">
+                {(await auth()).user.email}.
+              </span>
+            </p>
+            <div className="space-y-2">
+              <Button className="w-full" variant="secondary" asChild>
+                <a href="/api/auth/signout">
+                  <LogOut className="mr-2 size-4" />
+                  Sair da conta {(await auth()).user.email}
+                </a>
+              </Button>
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/">Voltar para a página inicial</Link>
+              </Button>
+            </div>
+          </div>
         ) : null}
       </div>
     </main>

@@ -6,6 +6,7 @@ import OrganizationSwitcher from './organization-switcher'
 import ProfileButton from './profile-button'
 
 import Link from 'next/link'
+import PendingInvites from './pending-invites'
 import ProjectSwitcher from './project-switcher'
 import { ThemeSwitcher } from './theme/theme-switcher'
 import { Separator } from './ui/separator'
@@ -30,6 +31,7 @@ export default async function Header() {
           )}
         </div>
         <div className="flex items-center gap-4">
+          <PendingInvites />
           <ThemeSwitcher />
           <Separator orientation="vertical" className="py-4" />
           <ProfileButton />

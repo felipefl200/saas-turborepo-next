@@ -15,6 +15,9 @@ export async function createOrganization({
 }: CreateOrganization) {
   const result = await api
     .post('organizations', {
+      next: {
+        tags: ['organizations'],
+      },
       json: { name, domain, shouldAttachUsersByDomain },
     })
     .json<CreateOrganizationResponse>()
