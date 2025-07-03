@@ -1,7 +1,7 @@
 import { auth } from '@/http/middlewares/auth'
 import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 import { prisma } from '@/lib/prisma'
-import { roleSchema } from '@saas/auth'
+import { roleSchema } from '@saas/auth/src/types'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -24,10 +24,16 @@ export async function getPendingInvites(app: FastifyInstance) {
                   email: z.string().email(),
                   role: roleSchema,
                   createdAt: z.date(),
+                  organization: z.object({
+                    id: z.string(),
+                    name: z.string(),
+                    avatarUrl: z.string().nullable(),
+                  }),
                   author: z
                     .object({
                       id: z.string(),
                       name: z.string().nullable(),
+                      avatarUrl: z.string().nullable(),
                     })
                     .nullable(),
                 })
@@ -58,10 +64,18 @@ export async function getPendingInvites(app: FastifyInstance) {
             email: true,
             role: true,
             createdAt: true,
+            organization: {
+              select: {
+                id: true,
+                name: true,
+                avatarUrl: true,
+              },
+            },
             author: {
               select: {
                 id: true,
                 name: true,
+                avatarUrl: true,
               },
             },
           },
