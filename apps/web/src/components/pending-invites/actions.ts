@@ -6,7 +6,7 @@ import { revalidateTag } from 'next/cache'
 export async function acceptInviteAction(inviteId: string) {
   await acceptInvite({ inviteId })
 
-  revalidateTag('organization')
+  revalidateTag('organizations')
 }
 
 export async function rejectInviteAction(inviteId: string) {

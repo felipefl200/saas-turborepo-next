@@ -7,13 +7,16 @@ import { dateFromNow } from '@/lib/dateFromNow'
 import { queryClient } from '@/lib/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { Check, UserPlus2, X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Separator } from '../ui/separator'
 
 export default function PendingInvites() {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['pending-invites'],
     queryFn: getPendingInvites,
@@ -21,7 +24,14 @@ export default function PendingInvites() {
   })
 
   async function handleAcceptInvite(inviteId: string) {
-    await acceptInvite({ inviteId })
+    try {
+      await acceptInvite({ inviteId })
+      toast.success('Convite aceito com sucesso')
+      router.refresh()
+    } catch (error) {
+      toast.error('Erro ao aceitar convite')
+      return
+    }
 
     queryClient.invalidateQueries({
       queryKey: ['pending-invites'],
@@ -29,7 +39,12 @@ export default function PendingInvites() {
   }
 
   async function handleRejectInvite(inviteId: string) {
-    await rejectInvite({ inviteId })
+    try {
+      await rejectInvite({ inviteId })
+      toast.success('Convite recusado com sucesso')
+    } catch (error) {
+      toast.error('Erro ao recusar convite')
+    }
 
     queryClient.invalidateQueries({
       queryKey: ['pending-invites'],
